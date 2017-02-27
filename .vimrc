@@ -1,3 +1,5 @@
+" The Layout - Vim Config
+
 set encoding=utf-8
 set nocompatible
 syntax on
@@ -9,7 +11,7 @@ set expandtab
 set shiftwidth=2
 
 set background=dark
-colorscheme base16-railscasts
+colorscheme molokai
 
 set cursorline
 set number
