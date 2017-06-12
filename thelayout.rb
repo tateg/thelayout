@@ -1,16 +1,9 @@
+#!/usr/bin/env ruby
 # The Layout (thelayout.rb)
 # This is a small utility for setting up the Bash and Vim environment
 # Written by Tate Galbraith
-# Feb 2017
+# June 2017
 
-# Check if git gem is installed and install if not found
-begin
-  gem "git"
-rescue
-  `gem install git`
-end
-
-# Require Git for cloning and FileUtils for copying
 require 'git'
 require 'fileutils'
 
@@ -26,25 +19,18 @@ def os_check
   end
 end
 
-# Clone Vim colorschemes repo from GitHub
-def clone_theme
-  @repo = "https://github.com/flazz/vim-colorschemes"
-  @name = "vim-colorschemes"
+# Clone Vim colorscheme repo from GitHub
+def clone_vim_theme
+  @repo = "https://github.com/gkjgh/cobalt"
+  @name = "cobalt"
   if Dir.exists? @name
     FileUtils.rm_r(@name, :force => true)
   end
   Git.clone(@repo, @name)
 end
 
-# Copy .vimrc config to home directory
-def install_vim_layout
-  @source = ".vimrc"
-  @destination = File.expand_path("~/")
-  FileUtils.cp(@source, @destination)
-end
-
-# Copy colorschemes to .vim/colors directory
-def install_vim_themes
+# Copy vim colorscheme to .vim/colors directory
+def install_vim_theme
   @source = "vim-colorschemes/colors/."
   @destination = File.expand_path("~/.vim/colors")
   if Dir.exists? @destination
@@ -53,6 +39,13 @@ def install_vim_themes
     FileUtils.mkdir(@destination)
     FileUtils.cp_r(@source, @destination)
   end
+end
+
+# Copy .vimrc config to home directory
+def install_vimrc
+  @source = ".vimrc"
+  @destination = File.expand_path("~/")
+  FileUtils.cp(@source, @destination)
 end
 
 # Copy .bash_profile config to home directory
