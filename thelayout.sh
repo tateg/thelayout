@@ -1,14 +1,67 @@
 #!/bin/bash
 
-install_ruby() {
-  if hash rvm 
+# The Layout bash script
+# Written by Tate Galbraith
+# June 2017
 
-brew() {
-  if hash brew 2>/dev/null; then
-    brew update
+function install_ruby {
+  if hash rvm 2>/dev/null; then
+    echo "RVM already installed. Updating..."
+    rvm get stable
   else
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    echo "RVM not found. Installing..."
+    \curl -sSL https://get.rvm.io | bash -s stable --ruby
   fi
 }
 
 
+function install_brew {
+  if hash brew 2>/dev/null; then
+    echo "Brew already installed. Updating..."
+    brew update
+  else
+    echo "Brew not found. Installing..."
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  fi
+}
+
+function install_git_mac {
+  if hash git 2>/dev/null; then
+    echo "Git already installed..."
+    return
+  else
+    echo "Git not found. Installing using Brew..."
+    brew install git
+  fi
+}
+
+function install_git_linux {
+  if hash git 2>/dev/null; then
+    echo "Git already installed..."
+    return
+  else
+    echo "Git not found. Installing..."
+    sudo apt-get --assume-yes update
+    sudo apt-get --assume-yes install git
+  fi
+}   
+
+function install_gems {
+  echo "Installing required gems..."
+  gem install git
+  gem install fileutils
+}
+
+if [[ $OSTYPE == "linux-gnu" ]]; then
+  install_git_linux
+  install_ruby
+  install_gems
+elif [[ $OSTYPE == "darwin"* ]]; then
+  install_brew
+  install_git_mac
+  install_ruby
+  install_gems
+fi
+
+# Call the Ruby script
+ruby thelayout.rb
