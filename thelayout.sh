@@ -10,6 +10,7 @@ function install_ruby {
     rvm get stable
   else
     echo "RVM not found. Installing..."
+    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
     \curl -sSL https://get.rvm.io | bash -s stable --ruby
   fi
 }
@@ -52,14 +53,30 @@ function install_gems {
   gem install fileutils
 }
 
+# Add RVM function to .bashrc in case not login shell
+function modify_bashrc {
+  if grep -qR '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' "$HOME/.bashrc"; then
+    echo ".bashrc already modified..."
+    return
+  else
+    echo "Modifying .bashrc..."
+    echo '# Load RVM into shell *as a function*' >> $HOME/.bashrc
+    echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' >> $HOME/.bashrc
+    . $HOME/.bashrc
+  fi
+}
+
+# Check OS and call related functions
 if [[ $OSTYPE == "linux-gnu" ]]; then
   install_git_linux
   install_ruby
+  modify_bashrc
   install_gems
 elif [[ $OSTYPE == "darwin"* ]]; then
   install_brew
   install_git_mac
   install_ruby
+  modify_bashrc
   install_gems
 fi
 
