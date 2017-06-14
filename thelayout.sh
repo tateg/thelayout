@@ -32,6 +32,7 @@ function install_git_mac {
     return
   else
     echo "Git not found. Installing using Brew..."
+    brew update
     brew install git
   fi
 }
@@ -53,6 +54,46 @@ function install_gems {
   gem install fileutils
 }
 
+function install_vim_linux {
+  if hash vim 2>/dev/null; then
+    echo "Vim already installed..."
+  else
+    echo "Installing Vim..."
+    sudo apt-get --assume-yes update
+    sudo apt-get --assume-yes install vim
+  fi
+}
+
+function install_vim_mac {
+  if hash vim 2>/dev/null; then
+    echo "Vim already installed..."
+  else
+    echo "Installing Vim..."
+    brew update
+    brew install vim
+  fi
+}
+
+function install_wget_linux {
+  if hash wget 2>/dev/null; then
+    echo "Wget already installed..."
+  else
+    echo "Installing wget..."
+    sudo apt-get --assume-yes update
+    sudo apt-get --assume-yes install wget
+  fi
+}
+
+function install_wget_mac {
+  if hash wget 2>/dev/null; then
+    echo "Wget already installed..."
+  else
+    echo "Installing wget..."
+    brew update
+    brew install wget
+  fi
+}
+
 # Add RVM function to .bashrc in case not login shell
 function modify_bashrc {
   if grep -qR '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' "$HOME/.bashrc"; then
@@ -69,12 +110,16 @@ function modify_bashrc {
 # Check OS and call related functions
 if [[ $OSTYPE == "linux-gnu" ]]; then
   install_git_linux
+  install_vim_linux
+  install_wget_linux
   install_ruby
   modify_bashrc
   install_gems
 elif [[ $OSTYPE == "darwin"* ]]; then
   install_brew
   install_git_mac
+  install_wget_mac
+  install_vim_mac
   install_ruby
   modify_bashrc
   install_gems

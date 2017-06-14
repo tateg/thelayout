@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
+
 # The Layout (thelayout.rb)
 # This is a small utility for setting up the Bash and Vim environment
 # Written by Tate Galbraith
 # June 2017
 
-require 'git'
 require 'fileutils'
 
 # Check operating system
@@ -19,25 +19,29 @@ def os_check
   end
 end
 
-# Clone Vim colorscheme repo from GitHub
-def clone_vim_theme
-  @repo = "https://github.com/gkjgh/cobalt"
-  @name = "cobalt"
-  if Dir.exists? @name
-    FileUtils.rm_r(@name, :force => true)
-  end
-  Git.clone(@repo, @name)
+# Download Bash completion file to hidden home - don't overwrite
+def download_bash_completion
+  `wget -nc -O ~/.git-completion.bash https://github.com/git/git/blob/master/contrib/completion/git-completion.bash`
+end
+
+# Download Bash prompt file to hidden home - don't overwrite
+def download_bash_prompt
+  `wget -nc -O ~/.git-prompt.sh https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh`
+end
+
+# Download Vim theme - don't overwrite
+def download_vim_theme
+  `wget -nc -O ~/.vim/colors/cobalt.vim https://github.com/gkjgh/cobalt/blob/master/colors/cobalt.vim`
 end
 
 # Copy vim colorscheme to .vim/colors directory
-def install_vim_theme
-  @source = "vim-colorschemes/colors/."
+def prep_vim_dir
   @destination = File.expand_path("~/.vim/colors")
   if Dir.exists? @destination
-    FileUtils.cp_r(@source, @destination)
+    return "Vim path already exists"
   else
     FileUtils.mkdir(@destination)
-    FileUtils.cp_r(@source, @destination)
+    return "Vim path created"
   end
 end
 
