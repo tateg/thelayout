@@ -8,30 +8,57 @@
 require 'fileutils'
 
 # Check operating system
-def os_check
-  if RUBY_PLATFORM.include?("linux")
-    @os_version = "linux"
-  elsif RUBY_PLATFORM.include?("darwin")
-    @os_version = "mac"
-  else
-    puts "Operating System not supported"
-    exit(1)
-  end
+if RUBY_PLATFORM.include?("linux")
+  @os_version = "linux"
+elsif RUBY_PLATFORM.include?("darwin")
+  @os_version = "mac"
+else
+  puts "Operating System not supported!"
+  exit(1)
 end
 
 # Download Bash completion file to hidden home - don't overwrite
 def download_bash_completion
   `wget -nc -O ~/.git-completion.bash https://github.com/git/git/blob/master/contrib/completion/git-completion.bash`
+  `chmod 755 ~/.git-completion.bash`
 end
 
 # Download Bash prompt file to hidden home - don't overwrite
 def download_bash_prompt
   `wget -nc -O ~/.git-prompt.sh https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh`
+  `chmod 755 ~/.git-prompt.sh`
 end
 
 # Download Vim theme - don't overwrite
 def download_vim_theme
   `wget -nc -O ~/.vim/colors/cobalt.vim https://github.com/gkjgh/cobalt/blob/master/colors/cobalt.vim`
+end
+
+# Download Vim Pathogen - don't overwrite
+def download_pathogen
+  `wget -nc -O ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim`
+end
+
+# Download Vim-Ruby
+def download_vimruby
+  `wget -nc -O ~/.vim/bundle/vim-ruby/master.zip https://github.com/vim-ruby/vim-ruby/archive/master.zip`
+  `unzip ~/.vim/bundle/vim-ruby/master.zip`
+  `rm ~/.vim/bundle/vim-ruby/master.zip`
+end
+
+# Make pathogen directories
+def prep_pathogen_dir
+  @autoload_dir = File.expand_path("~/.vim/autoload")
+  @bundle_dir = File.expand_path("~/.vim/bundle")
+  if Dir.exists? @autoload_dir
+    puts "Autoload directory already exists"
+  elsif Dir.exists? @bundle_dir
+    puts "Bundle directory already exists"
+  else
+    FileUtils.mkdir(@autoload_dir)
+    FileUtils.mkdir(@bundle_dir)
+    download_pathogen
+  end
 end
 
 # Copy vim colorscheme to .vim/colors directory
@@ -43,6 +70,12 @@ def prep_vim_dir
     FileUtils.mkdir(@destination)
     return "Vim path created"
   end
+end
+
+# Prep Vim-Ruby directories
+def prep_vimruby_dir
+  @vimruby_dir = File.expand_path("~/.vim/bundle/vim-ruby")
+
 end
 
 # Copy .vimrc config to home directory
@@ -66,17 +99,3 @@ def install_bash_layout
 end
 
 # Call installations
-puts "Checking operating system..."
-os_check
-
-puts "Cloning themes..."
-clone_theme
-
-puts "Installing Vim layout..."
-install_vim_layout
-
-puts "Installing Vim themes..."
-install_vim_themes
-
-puts "Installing Bash layout..."
-install_bash_layout

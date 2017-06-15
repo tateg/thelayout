@@ -7,11 +7,16 @@ Currently The Layout will configure the following:
 - Git installation with OS detection
 - Homebrew installation with OS detection
 - Vim installation with OS detection
-- Customized .vimrc with Pathogen ruby-vim integration
+- Customized .vimrc with Pathogen & Vim-Ruby integration
 - Vim theme installation
 - Customized .bashrc for RVM
 - Customized .bash_profile with colors and Git integration
 
 This set of scripts and configuration items can be easily tweaked to suit your individual environment.
 
-More information on Git shell integration available at: http://neverstopbuilding.com/gitpro
+## References & Credits
+- More information on Git shell integration available at: http://neverstopbuilding.com/gitpro
+- Git shell integration source files available at in Git repository
+- Cobalt Vim theme available at: https://github.com/gkjgh/cobalt
+- Pathogen Vim integration available at: https://github.com/tpope/vim-pathogen
+- Vim-Ruby integration available at: https://github.com/vim-ruby/vim-ruby
