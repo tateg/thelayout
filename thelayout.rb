@@ -53,8 +53,8 @@ def install_pathogen
   @bundle_dir = File.expand_path("~/.vim/bundle")
   @pathogen = "pathogen.vim"
   @old = "pathogen_old.vim"
-  if !Dir.exists? @autoload_dir { FileUtils.mkdir(@autoload_dir) }
-  if !Dir.exists? @bundle_dir { FileUtils.mkdir(@bundle_dir) }
+  if !Dir.exists? @autoload_dir then FileUtils.mkdir(@autoload_dir) end
+  if !Dir.exists? @bundle_dir then FileUtils.mkdir(@bundle_dir) end
   if File.file?("#{@autoload_dir}#{@pathogen}")
     FileUtils.mv("#{@autoload_dir}#{@pathogen}", "#{@autoload_dir}#{@old}")
     download_pathogen
