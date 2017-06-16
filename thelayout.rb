@@ -44,57 +44,74 @@ def download_vimruby
   `wget -nc -O ~/.vim/bundle/vim-ruby/master.zip https://github.com/vim-ruby/vim-ruby/archive/master.zip`
   `unzip ~/.vim/bundle/vim-ruby/master.zip`
   `rm ~/.vim/bundle/vim-ruby/master.zip`
+  `mv ~/.vim/bundle/vim-ruby-master ~/.vim/bundle/vim-ruby`
 end
 
 # Make pathogen directories
-def prep_pathogen_dir
+def install_pathogen
   @autoload_dir = File.expand_path("~/.vim/autoload")
   @bundle_dir = File.expand_path("~/.vim/bundle")
-  if Dir.exists? @autoload_dir
-    puts "Autoload directory already exists"
-  elsif Dir.exists? @bundle_dir
-    puts "Bundle directory already exists"
+  @pathogen = "pathogen.vim"
+  @old = "pathogen_old.vim"
+  if !Dir.exists? @autoload_dir { FileUtils.mkdir(@autoload_dir) }
+  if !Dir.exists? @bundle_dir { FileUtils.mkdir(@bundle_dir) }
+  if File.file?("#{@autoload_dir}#{@pathogen}")
+    FileUtils.mv("#{@autoload_dir}#{@pathogen}", "#{@autoload_dir}#{@old}")
+    download_pathogen
   else
-    FileUtils.mkdir(@autoload_dir)
-    FileUtils.mkdir(@bundle_dir)
     download_pathogen
   end
 end
 
 # Copy vim colorscheme to .vim/colors directory
-def prep_vim_dir
+def install_vim_theme
   @destination = File.expand_path("~/.vim/colors")
   if Dir.exists? @destination
-    return "Vim path already exists"
+    download_vim_theme
   else
     FileUtils.mkdir(@destination)
-    return "Vim path created"
+    download_vim_theme
   end
 end
 
-# Prep Vim-Ruby directories
-def prep_vimruby_dir
+# Prep Vim-Ruby directories and install
+# Rename any existing vim-ruby install to old
+def install_vimruby
   @vimruby_dir = File.expand_path("~/.vim/bundle/vim-ruby")
-
+  @old = File.expand_path("~/.vim/bundle/vim-ruby_old")
+  if Dir.exists? @vimruby_dir
+    FileUtils.mv(@vimruby_dir, @old)
+    download_vimruby
+  else
+    download_vimruby
+  end
 end
 
 # Copy .vimrc config to home directory
+# Rename any existing config to old
 def install_vimrc
   @source = ".vimrc"
+  @old = ".vimrc_old"
   @destination = File.expand_path("~/")
-  FileUtils.cp(@source, @destination)
+  if File.file?("#{@destination}#{@source}")
+    FileUtils.mv("#{@destination}#{@source}", "#{@destination}#{@old}")
+    FileUtils.cp(@source, @destination)
+  else
+    FileUtils.cp(@source, @destination)
+  end
 end
 
-# Copy .bash_profile config to home directory
-# Safety for Linux systems
-def install_bash_layout
+# Copy .bash_profile to home directory
+# Rename any existing config to old
+def install_bash_profile
   @source = ".bash_profile"
+  @old = ".bash_profile_old"
   @destination = File.expand_path("~/")
-  if @os_version.include?("mac")
+  if File.file?("#{@destination}#{@source}")
+    FileUtils.mv("#{@destination}#{@source}", "#{@destination}#{@old}")
     FileUtils.cp(@source, @destination)
-  elsif @os_version.include?("linux")
-    # @existing_profile = open(@destination + @source, "w")
-    #FileUtils.cp(@source, @destination)
+  else
+    FileUtils.cp(@source, @destination)
   end
 end
 
