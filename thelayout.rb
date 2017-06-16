@@ -7,16 +7,6 @@
 
 require 'fileutils'
 
-# Check operating system
-if RUBY_PLATFORM.include?("linux")
-  @os_version = "linux"
-elsif RUBY_PLATFORM.include?("darwin")
-  @os_version = "mac"
-else
-  puts "Operating System not supported!"
-  exit(1)
-end
-
 # Download Bash completion file to hidden home - don't overwrite
 def download_bash_completion
   `wget -nc -O ~/.git-completion.bash https://github.com/git/git/blob/master/contrib/completion/git-completion.bash`
@@ -116,3 +106,26 @@ def install_bash_profile
 end
 
 # Call installations
+# Check operating system
+if RUBY_PLATFORM.include?("linux")
+  @os_version = "linux"
+  download_bash_completion
+  download_bash_prompt
+  install_vimruby
+  install_pathogen
+  install_vim_theme
+  install_vimrc
+  install_bash_profile
+elsif RUBY_PLATFORM.include?("darwin")
+  @os_version = "mac"
+  download_bash_completion
+  download_bash_prompt
+  install_vimruby
+  install_pathogen
+  install_vim_theme
+  install_vimrc
+  install_bash_profile
+else
+  puts "Operating System not supported!"
+  exit(1)
+end
