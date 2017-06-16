@@ -51,7 +51,14 @@ function install_git_linux {
 function install_gems {
   echo "Installing required gems..."
   gem install git
-  gem install fileutils
+  gem install colorize
+  gem install dashboard-api
+  gem install pg
+  gem install OptionParser
+  gem install net-ssh
+  gem install mysql
+  gem install httparty
+  gem install json
 }
 
 function install_vim_linux {
