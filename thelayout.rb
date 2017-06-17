@@ -31,9 +31,9 @@ end
 
 # Download Vim-Ruby
 def download_vimruby
-  `wget -nc -O ~/.vim/bundle/vim-ruby/master.zip https://github.com/vim-ruby/vim-ruby/archive/master.zip`
-  `unzip ~/.vim/bundle/vim-ruby/master.zip`
-  `rm ~/.vim/bundle/vim-ruby/master.zip`
+  `wget -nc -O ~/.vim/bundle/master.zip https://github.com/vim-ruby/vim-ruby/archive/master.zip`
+  `unzip ~/.vim/bundle/master.zip`
+  `rm ~/.vim/bundle/master.zip`
   `mv ~/.vim/bundle/vim-ruby-master ~/.vim/bundle/vim-ruby`
 end
 
@@ -73,6 +73,7 @@ def install_vimruby
     FileUtils.mv(@vimruby_dir, @old)
     download_vimruby
   else
+    FileUtils.mkdir(@vimruby_dir)
     download_vimruby
   end
 end
