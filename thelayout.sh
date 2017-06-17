@@ -53,10 +53,8 @@ function install_gems {
   gem install git
   gem install colorize
   gem install dashboard-api
-  gem install pg
   gem install OptionParser
   gem install net-ssh
-  gem install mysql
   gem install httparty
   gem install json
 }

@@ -9,19 +9,19 @@ require 'fileutils'
 
 # Download Bash completion file to hidden home - don't overwrite
 def download_bash_completion
-  `wget -nc -O ~/.git-completion.bash https://github.com/git/git/blob/master/contrib/completion/git-completion.bash`
+  `wget -nc -O ~/.git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash`
   `chmod 755 ~/.git-completion.bash`
 end
 
 # Download Bash prompt file to hidden home - don't overwrite
 def download_bash_prompt
-  `wget -nc -O ~/.git-prompt.sh https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh`
+  `wget -nc -O ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh`
   `chmod 755 ~/.git-prompt.sh`
 end
 
 # Download Vim theme - don't overwrite
 def download_vim_theme
-  `wget -nc -O ~/.vim/colors/cobalt.vim https://github.com/gkjgh/cobalt/blob/master/colors/cobalt.vim`
+  `wget -nc -O ~/.vim/colors/cobalt.vim https://raw.githubusercontent.com/gkjgh/cobalt/master/colors/cobalt.vim`
 end
 
 # Download Vim Pathogen - don't overwrite
@@ -32,7 +32,7 @@ end
 # Download Vim-Ruby
 def download_vimruby
   `wget -nc -O ~/.vim/bundle/master.zip https://github.com/vim-ruby/vim-ruby/archive/master.zip`
-  `unzip ~/.vim/bundle/master.zip`
+  `unzip ~/.vim/bundle/master.zip -d ~/.vim/bundle`
   `rm ~/.vim/bundle/master.zip`
   `mv ~/.vim/bundle/vim-ruby-master ~/.vim/bundle/vim-ruby`
 end
@@ -73,7 +73,6 @@ def install_vimruby
     FileUtils.mv(@vimruby_dir, @old)
     download_vimruby
   else
-    FileUtils.mkdir(@vimruby_dir)
     download_vimruby
   end
 end
