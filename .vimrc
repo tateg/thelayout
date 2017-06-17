@@ -10,8 +10,10 @@ set softtabstop=2
 set expandtab
 set shiftwidth=2
 
+execute pathogen#infect()
+
 set background=dark
-colorscheme molokai
+colorscheme cobalt
 
 set cursorline
 set number
