@@ -28,6 +28,10 @@ fi
 # Set custom hostname to shorten
 if [ $HOSTNAME == "tategalbraithimac.local" ]; then
   CUSTOM_HOST="imac"
+elif [ $HOSTNAME == "tate-galbraith-mbp" ]; then
+  CUSTOM_HOST="mbp"
+else
+  CUSTOM_HOST="\h"
 fi
 # Bash Git integration and prompt
 export PS1=$LIGHT_GRAY"$CUSTOM_USER@$CUSTOM_HOST"'$(
