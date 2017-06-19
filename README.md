@@ -16,7 +16,7 @@ This set of scripts and configuration items can be easily tweaked to suit your i
 
 ## References & Credits
 - More information on Git shell integration available at: http://neverstopbuilding.com/gitpro
-- Git shell integration source files available at in Git repository
+- Git shell integration source files available in original Git repository
 - Cobalt Vim theme available at: https://github.com/gkjgh/cobalt
 - Pathogen Vim integration available at: https://github.com/tpope/vim-pathogen
 - Vim-Ruby integration available at: https://github.com/vim-ruby/vim-ruby
