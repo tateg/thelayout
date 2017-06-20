@@ -6,6 +6,7 @@
 # June 2017
 
 require 'fileutils'
+require 'colorize'
 
 # Download Bash completion file to hidden home - don't overwrite
 def download_bash_completion
@@ -35,6 +36,39 @@ def download_vimruby
   `unzip ~/.vim/bundle/master.zip -d ~/.vim/bundle`
   `rm ~/.vim/bundle/master.zip`
   `mv ~/.vim/bundle/vim-ruby-master ~/.vim/bundle/vim-ruby`
+end
+
+# Download OhMyZsh
+def download_ohmyzsh
+  `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
+end
+
+# Set the OhMyZsh theme
+# Read in current .zshrc find config line and change
+# Output to temp file then move into existing .zshrc
+def install_ohmyzsh_theme
+  @theme = "muse"
+  @zshrc_path = File.expand_path("~/.zshrc")
+  @zshrc_temp_path = File.expand_path("~/.zshrc_temp")
+  @zshrc_temp_file = File.new(@zshrc_temp_path, "w+")
+  File.open(@zshrc_path, "r").readlines.each do |line|
+    if line.include?("ZSH_THEME=")
+      @zshrc_temp_file.puts line.split("=")[0] + "=" + "\"#{@theme}\""
+    else
+      @zshrc_temp_file.puts line
+    end
+  end
+  @zshrc_temp_file.close
+  FileUtils.mv(@zshrc_temp_path, @zshrc_path)
+end
+
+# Add OhMyZsh custom aliases
+def install_ohmyzsh_aliases
+  @zshrc_path = File.expand_path("~/.zshrc")
+  @aliases = ["gg='git status'"]
+  @aliases.each do |entry|
+    `echo 'alias #{entry}' >> #{@zshrc_path}`
+  end
 end
 
 # Make pathogen directories
@@ -109,6 +143,7 @@ end
 # Check operating system
 if RUBY_PLATFORM.include?("linux")
   @os_version = "linux"
+  puts "Linux OS detected - proceeding with install...".green
   download_bash_completion
   download_bash_prompt
   install_vimruby
@@ -116,8 +151,11 @@ if RUBY_PLATFORM.include?("linux")
   install_vim_theme
   install_vimrc
   install_bash_profile
+  download_ohmyzsh
+  install_ohmyzsh_theme
 elsif RUBY_PLATFORM.include?("darwin")
   @os_version = "mac"
+  puts "Mac OS detected - proceeding with install...".green
   download_bash_completion
   download_bash_prompt
   install_vimruby
@@ -125,7 +163,9 @@ elsif RUBY_PLATFORM.include?("darwin")
   install_vim_theme
   install_vimrc
   install_bash_profile
+  download_ohmyzsh
+  install_ohmyzsh_theme
 else
-  puts "Operating System not supported!"
+  puts "Operating System not supported!".red
   exit(1)
 end
