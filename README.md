@@ -11,6 +11,8 @@ Currently The Layout will configure the following:
 - Vim theme installation
 - Customized .bashrc for RVM
 - Customized .bash_profile with colors and Git integration
+- OhMyZsh installation
+- OhMyZsh theme and custom alias configuration
 
 This set of scripts and configuration items can be easily tweaked to suit your individual environment.
 
